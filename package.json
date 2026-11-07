@@ -1,0 +1,31 @@
+{
+  "name": "portfolio-website-1",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "asciify-engine": "^4.33.0",
+    "lenis": "^1.3.27",
+    "lucide-react": "^1.70.0",
+    "motion": "^14.10.1",
+    "next": "16.4.5",
+    "react": "19.3.0",
+    "react-activity-calendar": "^3.2.1",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.5",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
