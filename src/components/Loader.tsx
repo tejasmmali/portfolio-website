@@ -1,92 +1,58 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
-const STORAGE_KEY = "tm-ascii-loader-seen";
+const LoaderDoneContext = createContext<boolean | null>(null);
 
-type Props = {
-  onDone?: () => void;
-};
+export function useLoaderDone() {
+  const value = useContext(LoaderDoneContext);
+  return value === null ? true : value;
+}
 
 function prefersReducedMotion(): boolean {
   if (typeof window === "undefined") return true;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export function Loader({ onDone }: Props) {
-  const hostRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+export function LoaderGate({ children }: { children: ReactNode }) {
+  const [done, setDone] = useState(false);
+  const onDone = useCallback(() => setDone(true), []);
+
+  return (
+    <LoaderDoneContext.Provider value={done}>
+      <Loader onDone={onDone} />
+      {children}
+    </LoaderDoneContext.Provider>
+  );
+}
+
+function Loader({ onDone }: { onDone: () => void }) {
+  const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    try {
-      if (sessionStorage.getItem(STORAGE_KEY) === "1") {
-        onDone?.();
-        return;
-      }
-    } catch {
-      /* private mode */
-    }
-
     if (prefersReducedMotion()) {
-      try {
-        sessionStorage.setItem(STORAGE_KEY, "1");
-      } catch {
-        /* ignore */
-      }
-      onDone?.();
+      setVisible(false);
+      onDone();
       return;
     }
 
-    let destroyed = false;
-    let decodeHandle: { destroy: () => void; replay: () => void } | null =
-      null;
-    let fadeTimer: number | undefined;
-    let doneTimer: number | undefined;
-
-    setVisible(true);
-
-    const run = async () => {
-      const { decode } = await import("asciify-engine/kit");
-      if (destroyed || !hostRef.current) return;
-
-      decodeHandle = decode(hostRef.current, {
-        text: "Tejas Mali",
-        duration: 900,
-        trigger: "manual",
-        settle: "glyphs",
-        replayOnHover: false,
-        lazy: false,
-        charset: " .:-=+*#%@",
-      });
-
-      decodeHandle.replay();
-
-      fadeTimer = window.setTimeout(() => {
-        if (destroyed) return;
-        setFading(true);
-        doneTimer = window.setTimeout(() => {
-          if (destroyed) return;
-          try {
-            sessionStorage.setItem(STORAGE_KEY, "1");
-          } catch {
-            /* ignore */
-          }
-          setVisible(false);
-          onDone?.();
-        }, 280);
-      }, 1000);
-    };
-
-    void run();
+    const fadeTimer = window.setTimeout(() => setFading(true), 700);
+    const doneTimer = window.setTimeout(() => {
+      setVisible(false);
+      onDone();
+    }, 1000);
 
     return () => {
-      destroyed = true;
-      if (fadeTimer) window.clearTimeout(fadeTimer);
-      if (doneTimer) window.clearTimeout(doneTimer);
-      decodeHandle?.destroy();
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(doneTimer);
     };
   }, [onDone]);
 
@@ -94,16 +60,9 @@ export function Loader({ onDone }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-black transition-opacity duration-300"
+      className="fixed inset-0 z-50 bg-white transition-opacity duration-300 dark:bg-black"
       style={{ opacity: fading ? 0 : 1 }}
       aria-hidden
-    >
-      <div
-        ref={hostRef}
-        className="font-mono text-sm tracking-tight text-black dark:text-white"
-      >
-        Tejas Mali
-      </div>
-    </div>
+    />
   );
 }

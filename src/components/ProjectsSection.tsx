@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ContributionMap } from "@/components/ContributionMap";
 import { ProjectRow } from "@/components/ProjectRow";
 import { getContributions } from "@/lib/contributions";
@@ -20,6 +21,15 @@ export async function ProjectsSection() {
           </li>
         ))}
       </ul>
+      <div className="mt-4">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-1 text-[12px] text-neutral-500 underline-offset-4 transition-colors hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-white"
+        >
+          More
+          <span aria-hidden>→</span>
+        </Link>
+      </div>
       {contributions ? (
         <ContributionMap
           className="mt-10"

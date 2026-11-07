@@ -6,7 +6,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
 import { HeroBackground } from "@/components/HeroBackground";
 import { IconGithub, IconLinkedin, IconMail } from "@/components/Icons";
-import { Loader } from "@/components/Loader";
+import { LoaderGate } from "@/components/Loader";
 import {
   ProjectsSection,
   ProjectsSectionFallback,
@@ -53,8 +53,7 @@ const cvButtonClass =
 
 export default function Home() {
   return (
-    <>
-      <Loader />
+    <LoaderGate>
       <ScreenPet />
       <div className="mx-auto w-full max-w-[640px] px-5 pb-16 pt-8 sm:px-6 sm:pt-12">
         <header className="mb-10 flex items-center justify-between gap-4">
@@ -180,6 +179,6 @@ export default function Home() {
           © 2026 Tejas Mali
         </footer>
       </div>
-    </>
+    </LoaderGate>
   );
 }

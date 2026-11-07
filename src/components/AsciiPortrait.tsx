@@ -7,6 +7,7 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import { useLoaderDone } from "@/components/Loader";
 
 export const ASCII_PORTRAIT = {
   src: "/headshot-mirrored.jpg",
@@ -190,7 +191,11 @@ export function AsciiPortrait({
     [compact, size],
   );
 
+  const loaderDone = useLoaderDone();
+
   useEffect(() => {
+    if (!loaderDone) return;
+
     if (prefersReducedMotion()) {
       setUseFallback(true);
       return;
@@ -245,7 +250,7 @@ export function AsciiPortrait({
       cancelled = true;
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  }, [buildFrames, durationMs, paint]);
+  }, [buildFrames, durationMs, loaderDone, paint]);
 
   const shellStyle: CSSProperties = {
     width: size,

@@ -34,11 +34,11 @@ export const FALLBACK_PROJECTS: GithubProject[] = [
     stars: 0,
   },
   {
-    title: "Educational Website",
+    title: "Smart IoT Alarm",
     description:
-      "Lightweight platform for organized student notes and study materials, with festival greeting pop-ups. Built with HTML, CSS, and JavaScript.",
-    href: "https://github.com/tejasmmali/educational-website",
-    language: "HTML",
+      "IoT desk alarm clock with a web-synced simulation control panel and phone notifications.",
+    href: "https://github.com/tejasmmali/smart-iot-alarm",
+    language: "JavaScript",
     stars: 0,
   },
   {
