@@ -47,23 +47,15 @@ export function ThemeToggle() {
       return;
     }
 
-    setBusy(true);
-    const wipe = document.createElement("div");
-    wipe.className = "tm-theme-wipe";
-    wipe.setAttribute("aria-hidden", "true");
-    wipe.style.background = next === "dark" ? "#000" : "#fff";
-    document.body.appendChild(wipe);
-
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
+    const startViewTransition = document.startViewTransition?.bind(document);
+    if (!startViewTransition) {
       commit();
-      wipe.remove();
-      setBusy(false);
-    };
-    wipe.addEventListener("animationend", finish, { once: true });
-    window.setTimeout(finish, 1900);
+      return;
+    }
+
+    setBusy(true);
+    const transition = startViewTransition(commit);
+    void transition.finished.finally(() => setBusy(false));
   };
 
   return (

@@ -59,14 +59,14 @@ const PX = 2;
 const PET_W = COLS * PX;
 const PET_H = ROWS * PX;
 
-const WAKE_AFTER_MS = 5500;
-const SLEEP_AFTER_MS = 9000;
-const CATCH_DISTANCE = 10;
-const WAKE_DISTANCE = 56;
-const FOLLOW_LAG = 0.085;
-const MAX_SPEED = 220;
-const MIN_SPEED = 55;
-const RUN_FRAME_RATE = 5.5;
+const WAKE_AFTER_MS = 8000;
+const SLEEP_AFTER_MS = 5000;
+const CATCH_DISTANCE = 14;
+const WAKE_DISTANCE = 72;
+const FOLLOW_LAG = 0.028;
+const MAX_SPEED = 85;
+const MIN_SPEED = 22;
+const RUN_FRAME_RATE = 3;
 
 const RECTS: Record<Frame, { x: number; y: number }[]> = Object.fromEntries(
   (Object.keys(SPRITES) as Frame[]).map((frame) => {
@@ -165,7 +165,7 @@ export function ScreenPet() {
 
         if (dist > threshold) {
           mode = "run";
-          const speed = Math.min(MAX_SPEED, Math.max(MIN_SPEED, dist * 1.1));
+          const speed = Math.min(MAX_SPEED, Math.max(MIN_SPEED, dist * 0.45));
           const step = Math.min(dist, speed * dt);
           pos.x += (dx / dist) * step;
           pos.y += (dy / dist) * step;

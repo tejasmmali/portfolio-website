@@ -97,16 +97,22 @@ html.dark ::selection {
   outline-offset: 2px;
 }
 
-.tm-theme-wipe {
-  position: fixed;
-  inset: 0;
-  z-index: 2147483647;
-  pointer-events: none;
-  -webkit-mask: url(/theme-dancer.gif) 50% / 0 no-repeat;
-  mask: url(/theme-dancer.gif) 50% / 0 no-repeat;
-  -webkit-mask-mode: alpha;
-  mask-mode: alpha;
+/* Theme reveal via View Transitions — dancing GIF masks the new page
+   (including text) so the silhouette dances behind/through the content. */
+::view-transition-group(root) {
+  animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+  z-index: 100;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
   animation: tm-theme-scale 1.75s cubic-bezier(0.7, 0, 0.84, 0) both;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  -webkit-mask: url(/shigure-ui-smol.gif) 50% / 0 no-repeat;
+  mask: url(/shigure-ui-smol.gif) 50% / 0 no-repeat;
 }
 
 @keyframes tm-theme-scale {
@@ -115,12 +121,12 @@ html.dark ::selection {
     mask-size: 0;
   }
   10% {
-    -webkit-mask-size: 28vmax;
-    mask-size: 28vmax;
+    -webkit-mask-size: 25vmax;
+    mask-size: 25vmax;
   }
   90% {
-    -webkit-mask-size: 28vmax;
-    mask-size: 28vmax;
+    -webkit-mask-size: 25vmax;
+    mask-size: 25vmax;
   }
   100% {
     -webkit-mask-size: 750vmax;
@@ -129,6 +135,15 @@ html.dark ::selection {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+  ::view-transition-new(root) {
+    -webkit-mask: none;
+    mask: none;
+  }
+
   *,
   *::before,
   *::after {
