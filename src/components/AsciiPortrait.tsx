@@ -263,57 +263,67 @@ export function AsciiPortrait({
   if (useFallback) {
     return (
       <div
-        className={`relative shrink-0 overflow-hidden border border-neutral-500 ${className}`}
-        style={shellStyle}
-        data-pet-perch
+        className={`relative shrink-0 ${className}`}
+        style={{ width: size, maxWidth: "100%" }}
+        data-oneko-seat
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={ASCII_PORTRAIT.src}
-          alt={alt}
-          width={size}
-          height={size}
-          className="h-full w-full object-cover"
-        />
+        <div
+          className="overflow-hidden border border-neutral-500"
+          style={shellStyle}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={ASCII_PORTRAIT.src}
+            alt={alt}
+            width={size}
+            height={size}
+            className="h-full w-full object-cover"
+          />
+        </div>
       </div>
     );
   }
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden border border-neutral-500 ${className}`}
-      style={{ ...shellStyle, aspectRatio: "1 / 1" }}
-      data-pet-perch
-      role="img"
-      aria-label={alt}
+      className={`relative shrink-0 ${className}`}
+      style={{ width: size, maxWidth: "100%" }}
+      data-oneko-seat
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 h-full w-full transition-opacity duration-500"
-        style={{
-          opacity: showPhoto ? 0 : 1,
-          background: PORTRAIT_BG,
-        }}
-        aria-hidden
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={ASCII_PORTRAIT.src}
-        alt=""
-        width={size}
-        height={size}
-        draggable={false}
-        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-        style={{ opacity: showPhoto ? 1 : 0 }}
-        aria-hidden
-      />
-      {!ready && (
-        <div
-          className="absolute inset-0"
-          style={{ background: PORTRAIT_BG }}
+      <div
+        className="relative overflow-hidden border border-neutral-500"
+        style={{ ...shellStyle, aspectRatio: "1 / 1" }}
+        role="img"
+        aria-label={alt}
+      >
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full transition-opacity duration-500"
+          style={{
+            opacity: showPhoto ? 0 : 1,
+            background: PORTRAIT_BG,
+          }}
           aria-hidden
         />
-      )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={ASCII_PORTRAIT.src}
+          alt=""
+          width={size}
+          height={size}
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+          style={{ opacity: showPhoto ? 1 : 0 }}
+          aria-hidden
+        />
+        {!ready && (
+          <div
+            className="absolute inset-0"
+            style={{ background: PORTRAIT_BG }}
+            aria-hidden
+          />
+        )}
+      </div>
     </div>
   );
 }
